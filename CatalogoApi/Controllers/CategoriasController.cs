@@ -29,12 +29,19 @@ namespace CatalogoApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Categoria>> GetCategorias()
         {
-            var categorias = _context.Categorias.AsNoTracking().ToList();
-
-            if (categorias is null)
-                return NotFound("Produtos não encontrados");
+            try
+            {
+                var categorias = _context.Categorias.AsNoTracking().ToList();
+                
+                if (categorias is null)
+                    return NotFound("Produtos não encontrados");
             
-            return categorias;
+                return categorias;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Ocorreu um erro ao carregar o categoria");
+            }
         }
         
         [HttpGet("{id:int}", Name = "ObterCategoria")]
