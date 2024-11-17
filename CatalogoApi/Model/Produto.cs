@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace CatalogoApi.Model;
 
@@ -31,5 +32,6 @@ public class Produto
     public int? CategoriaId { get; set; }
     
     //PK
+    [JsonIgnore]
     public Categoria? Categoria { get; set; }
 }
