@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace CatalogoApi.Model;
 
 [Table("Produtos")]
-public class Produto
+public class Produto : IValidatableObject
 {
     [Key]
     public int ProdutoId { get; set; }
@@ -36,4 +36,26 @@ public class Produto
     //PK
     [JsonIgnore]
     public Categoria? Categoria { get; set; }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        if (!string.IsNullOrEmpty(this.Nome))
+        {
+            var primeiraLetraMaiuscula = this.Nome.ToString()[0].ToString();
+
+            if (primeiraLetraMaiuscula != primeiraLetraMaiuscula.ToUpper())
+            {
+                yield return new
+                    ValidationResult("A primiera letra do nome do produto deve ser maiúscula", 
+                        new[] { nameof(this.Nome) });
+            }
+        }
+
+        if (this.Estoque > 0.0)
+        {
+            yield return new
+                ValidationResult("Estoque tem que ser maior a 0", 
+                    new[] { nameof(this.Nome) });
+        }
+    }
 }
