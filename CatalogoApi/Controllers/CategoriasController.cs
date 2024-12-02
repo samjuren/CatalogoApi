@@ -60,6 +60,8 @@ namespace CatalogoApi.Controllers
         [HttpGet("{id:int}", Name = "ObterCategoria")]
         public ActionResult<Categoria> GetCategoriaById(int id)
         {
+            //throw new Exception("Exceção ao retornar o categoria");
+            
             var categorias = _context.Categorias
                 .AsNoTracking()
                 .FirstOrDefault(x => x.CategoriaId == id);
