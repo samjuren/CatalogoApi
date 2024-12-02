@@ -19,15 +19,15 @@ namespace CatalogoApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Produto>>> GetProdutos()
         {
-            if (_context.Produtos != null)
-            {
-                var produtos = await _context.Produtos.AsNoTracking().ToListAsync();
-
-                if (produtos is null)
-                    return NotFound("Produtos não encontrados");
-                
-                return produtos;
-            }
+            // if (_context.Produtos != null)
+            // {
+            //     var produtos = await _context.Produtos.AsNoTracking().ToListAsync();
+            //
+            //     if (produtos is null)
+            //         return NotFound("Produtos não encontrados");
+            //     
+            //     return produtos;
+            // }
             
             return NotFound("Problema ao acessar o banco de dados");
         }

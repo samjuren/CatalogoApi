@@ -35,6 +35,11 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "profiles": {
+        "ProjectName": {
+          "applicationUrl": "http://*:7015"
+        }
       }
     }
   }

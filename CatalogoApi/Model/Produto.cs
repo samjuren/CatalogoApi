@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using CatalogoApi.Validation;
 using Newtonsoft.Json;
 
 namespace CatalogoApi.Model;
@@ -10,8 +11,9 @@ public class Produto
     [Key]
     public int ProdutoId { get; set; }
     
-    [Required]
-    [StringLength(80)]
+    [Required(ErrorMessage = "O nome é obrigatório")]
+    [StringLength(80, ErrorMessage = "O nome tem que tem até 80 caracteres", MinimumLength = 5)]
+    [PrimeiraLetraMaiuscula]
     public string? Nome { get; set; }
     
     [Required]
