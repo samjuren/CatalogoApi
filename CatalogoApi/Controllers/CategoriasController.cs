@@ -1,4 +1,5 @@
 using CatalogoApi.Context;
+using CatalogoApi.Filter;
 using CatalogoApi.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +41,7 @@ namespace CatalogoApi.Controllers
         }
         
         [HttpGet]
+        [ServiceFilter(typeof(ApiLoggingFilter))]
         public ActionResult<IEnumerable<Categoria>> GetCategorias()
         {
             try
