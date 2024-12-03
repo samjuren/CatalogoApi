@@ -13,11 +13,13 @@ namespace CatalogoApi.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IConfiguration _config;
+        private readonly ILogger _logger;
         
-        public CategoriasController(AppDbContext context, IConfiguration config)
+        public CategoriasController(AppDbContext context, IConfiguration config, ILogger logger)
         {
             _context = context;
             _config = config;
+            _logger = logger;
         }
 
         [HttpGet("LerConfiguracao")]
@@ -34,6 +36,7 @@ namespace CatalogoApi.Controllers
         [HttpGet("Produtos")]
         public ActionResult<IEnumerable<Categoria>> GetCategoriasEProdutos()
         {
+            _logger.LogInformation("######## GET api/categorias/produtos ########/");
             return _context.Categorias
                 .AsNoTracking()
                 .Include(p => p.Produtos)
@@ -62,6 +65,8 @@ namespace CatalogoApi.Controllers
         [HttpGet("{id:int}", Name = "ObterCategoria")]
         public ActionResult<Categoria> GetCategoriaById(int id)
         {
+            _logger.LogInformation("######## GET api/categorias/if " + id + " ########/");
+            
             //throw new Exception("Exceção ao retornar o categoria");
             
             var categorias = _context.Categorias
