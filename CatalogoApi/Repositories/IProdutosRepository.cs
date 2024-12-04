@@ -2,11 +2,7 @@ using CatalogoApi.Model;
 
 namespace CatalogoApi.Repositories;
 
-public interface IProdutosRepository
+public interface IProdutosRepository :IRepository<Produto>
 {
-    IEnumerable<Produto> GetProdutos();
-    Produto GetProduto(int id);
-    Produto Create(Produto produto);
-    bool Update(Produto produto);
-    bool Delete(int id);
+    IEnumerable<Produto> ObterProdutosPorCategoria(int categoriaId);
 }

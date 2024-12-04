@@ -30,6 +30,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 //builder.Services.AddScoped<ApiLoggingFilter>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddScoped<IProdutosRepository, ProsutosRepository>();
+builder.Services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
 
 //builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration
 //{
