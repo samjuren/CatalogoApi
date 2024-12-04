@@ -53,7 +53,7 @@ namespace CatalogoApi.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ProdutoId"));
 
-                    b.Property<int>("CategoriaId")
+                    b.Property<int?>("CategoriaId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataCadastro")
@@ -91,9 +91,7 @@ namespace CatalogoApi.Migrations
                 {
                     b.HasOne("CatalogoApi.Model.Categoria", "Categoria")
                         .WithMany("Produtos")
-                        .HasForeignKey("CategoriaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoriaId");
 
                     b.Navigation("Categoria");
                 });

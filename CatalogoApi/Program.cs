@@ -1,8 +1,7 @@
 using System.Text.Json.Serialization;
 using CatalogoApi.Context;
 using CatalogoApi.Extensions;
-using CatalogoApi.Filter;
-using CatalogoApi.Logging;
+using CatalogoApi.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Console;
 
@@ -12,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(options =>
     {
-        options.Filters.Add(typeof(ApiExceptionFilter));
+        //options.Filters.Add(typeof(ApiExceptionFilter));
     })
     .AddJsonOptions(options =>
     {
@@ -28,12 +27,13 @@ string connectionString = builder.Configuration.GetConnectionString("DefaultConn
 builder.Services.AddDbContext<AppDbContext>(options => 
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-builder.Services.AddScoped<ApiLoggingFilter>();
+//builder.Services.AddScoped<ApiLoggingFilter>();
+builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 
-builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration
-{
-    LogLevel = LogLevel.Information,
-}));
+//builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration
+//{
+//    LogLevel = LogLevel.Information,
+//}));
 
 var app = builder.Build();
 
@@ -42,7 +42,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.ConfigureExceptionHandler();
+    //app.ConfigureExceptionHandler();
 }
 
 app.UseHttpsRedirection();

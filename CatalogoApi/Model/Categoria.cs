@@ -1,15 +1,12 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace CatalogoApi.Model;
 [Table("Categorias")]
 public class Categoria
 {
-    public Categoria()
-    {
-        Produtos = new Collection<Produto>();
-    }
     [Key]
     public int CategoriaId { get; set; }
     
@@ -22,5 +19,6 @@ public class Categoria
     public string? ImageUrl { get; set; }
     
     //PK
+    [JsonIgnore]
     public ICollection<Produto>? Produtos { get; set; }
 }
