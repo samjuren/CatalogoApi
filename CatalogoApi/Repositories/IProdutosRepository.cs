@@ -8,5 +8,5 @@ public interface IProdutosRepository
     Produto GetProduto(int id);
     Produto Create(Produto produto);
     bool Update(Produto produto);
-    Produto Delete(int id);
+    bool Delete(int id);
 }

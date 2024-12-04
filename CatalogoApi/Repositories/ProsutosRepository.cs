@@ -54,7 +54,7 @@ public class ProsutosRepository : IProdutosRepository
         return true;
     }
 
-    public Produto Delete(int id)
+    public bool Delete(int id)
     {
         var produtosExcluir = _context.Produtos.Find(id);
         
@@ -64,6 +64,6 @@ public class ProsutosRepository : IProdutosRepository
         _context.Produtos.Remove(produtosExcluir);
         _context.SaveChanges();
         
-        return produtosExcluir;
+        return true;
     }
 }
