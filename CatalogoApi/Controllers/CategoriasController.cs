@@ -11,10 +11,10 @@ namespace CatalogoApi.Controllers
     [ApiController]
     public class CategoriasController : ControllerBase
     {
-        private readonly ICategoriaRepository _categoriaRepository;
+        private readonly IRepository<Categoria> _categoriaRepository;
         private readonly IConfiguration _config;
 
-        public CategoriasController(ICategoriaRepository categoriaRepository, IConfiguration config)
+        public CategoriasController(IRepository<Categoria> categoriaRepository, IConfiguration config)
         {
             _categoriaRepository = categoriaRepository;
             _config = config;
@@ -37,7 +37,7 @@ namespace CatalogoApi.Controllers
         {
             try
             {
-                var categorias = _categoriaRepository.GetCategorias();
+                var categorias = _categoriaRepository.GetAll();
                 return Ok(categorias);
             }
             catch (Exception ex)
@@ -53,7 +53,7 @@ namespace CatalogoApi.Controllers
             
             //throw new Exception("Exceção ao retornar o categoria");
 
-            var categoria = _categoriaRepository.GetCategoria(id);
+            var categoria = _categoriaRepository.GetById(c => c.CategoriaId == id);
             
             if (categoria is null)
             {
@@ -91,10 +91,12 @@ namespace CatalogoApi.Controllers
         [HttpDelete("{id:int}")]
         public ActionResult Delete(int id)
         {
-            var categoriaExcluida = _categoriaRepository.Delete(id);
+            var categoria = _categoriaRepository.GetById(c => c.CategoriaId == id);
             
-            if (categoriaExcluida is null)
-                return NotFound("Produto não encontrado");
+            if (categoria is null)
+                return NotFound("Categoria não encontrada");
+            
+            var categoriaExcluida = _categoriaRepository.Delete(categoria);
             
             return Ok(categoriaExcluida);
         }
