@@ -1,6 +1,7 @@
 using CatalogoApi.Context;
 using CatalogoApi.Model;
 using CatalogoApi.Repositories;
+using CatalogoApi.Repositories.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,12 +12,12 @@ namespace CatalogoApi.Controllers
     [ApiController]
     public class CategoriasController : ControllerBase
     {
-        private readonly IRepository<Categoria> _categoriaRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _config;
 
-        public CategoriasController(IRepository<Categoria> categoriaRepository, IConfiguration config)
+        public CategoriasController(IUnitOfWork unitOfWork, IConfiguration config)
         {
-            _categoriaRepository = categoriaRepository;
+            _unitOfWork = unitOfWork;
             _config = config;
         }
 
@@ -37,7 +38,7 @@ namespace CatalogoApi.Controllers
         {
             try
             {
-                var categorias = _categoriaRepository.GetAll();
+                var categorias = _unitOfWork.categoriaRepository.GetAll();
                 return Ok(categorias);
             }
             catch (Exception ex)
@@ -50,10 +51,9 @@ namespace CatalogoApi.Controllers
         public ActionResult<Categoria> GetCategoriaById(int id)
         {
             //_logger.LogInformation("######## GET api/categorias/if " + id + " ########/");
-            
             //throw new Exception("Exceção ao retornar o categoria");
 
-            var categoria = _categoriaRepository.GetById(c => c.CategoriaId == id);
+            var categoria = _unitOfWork.categoriaRepository.GetById(c => c.CategoriaId == id);
             
             if (categoria is null)
             {
@@ -70,8 +70,9 @@ namespace CatalogoApi.Controllers
             if (categorias is null)
                 return BadRequest();
 
-            var categoriaCriada = _categoriaRepository.Create(categorias);
-
+            var categoriaCriada = _unitOfWork.categoriaRepository.Create(categorias);
+            _unitOfWork.Commit();
+            
             return new CreatedAtRouteResult("ObterProduto", 
                 new { id = categoriaCriada.CategoriaId }, categoriaCriada);
         }
@@ -84,19 +85,22 @@ namespace CatalogoApi.Controllers
                 return BadRequest("Dados invalidos");
             }
             
-            _categoriaRepository.Update(categorias);
+            _unitOfWork.categoriaRepository.Update(categorias);
+            _unitOfWork.Commit();
+            
             return Ok(categorias);
         }
         
         [HttpDelete("{id:int}")]
         public ActionResult Delete(int id)
         {
-            var categoria = _categoriaRepository.GetById(c => c.CategoriaId == id);
+            var categoria = _unitOfWork.categoriaRepository.GetById(c => c.CategoriaId == id);
             
             if (categoria is null)
                 return NotFound("Categoria não encontrada");
             
-            var categoriaExcluida = _categoriaRepository.Delete(categoria);
+            var categoriaExcluida = _unitOfWork.categoriaRepository.Delete(categoria);
+            _unitOfWork.Commit();
             
             return Ok(categoriaExcluida);
         }

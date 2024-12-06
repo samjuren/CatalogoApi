@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace CatalogoApi.Model;
 
@@ -32,7 +33,7 @@ public class Produto
     public int? CategoriaId { get; set; }
     
     //PK
-    //[JsonIgnore]
+    [JsonIgnore]
     public Categoria? Categoria { get; set; }
 
     // public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

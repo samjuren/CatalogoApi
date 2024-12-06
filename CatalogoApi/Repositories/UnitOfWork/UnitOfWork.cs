@@ -1,12 +1,13 @@
 using CatalogoApi.Context;
 using CatalogoApi.Repositories.UnitOfWork.Interface;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace CatalogoApi.Repositories.UnitOfWork;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private IProdutosRepository _produtosRepository;
-    private ICategoriaRepository _categoriaRepository;
+    private IProdutosRepository? _produtosRepository;
+    private ICategoriaRepository? _categoriaRepository;
     public AppDbContext _context { get; }
 
     public UnitOfWork(AppDbContext context)
@@ -34,5 +35,10 @@ public class UnitOfWork : IUnitOfWork
     public void Commit()
     {
         _context.SaveChanges();
+    }
+
+    public void Dispose()
+    {
+        _context.Dispose();
     }
 }
